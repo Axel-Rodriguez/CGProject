@@ -3,34 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ligthMovement:MonoBehaviour{
-    /* float elapsed = 0f, rot = 45f;
-    void FixedUpdate(){
-        elapsed += Time.deltaTime;
-        if (elapsed >= 1f) {
-            elapsed = elapsed % 1f;
-            transform.position += new Vector3(0.0f, 0.0f, 10.0f);
-            rot += 1f;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(rot, -23.45f, 0.0f),  Time.deltaTime * 5.0f);
-        }
-    } */
-    float rot = 30.0f, intensity = 5.0f;
+    // roll inicial de la luz
+    float roll = 30.0f;
+
     void Update(){
-        intensity += 0.001f;
-        this.gameObject.GetComponent<Light>().intensity = intensity;
-        if(transform.position.y < 1300.0f){
+        // evita que la luz se eleve mas de lo necesario
+        if(transform.position.y < 1000.0f){
+            // ajusta la intensidad de la luz dependiendo de la distancia
+            this.gameObject.GetComponent<Light>().intensity = transform.position.y / 100.0f;
+            // traslacion, la luz sube en el eje 'y'
             transform.position += new Vector3(0.0f, 0.4f, 0.0f);
         }
+        // traslacion, la luz se desplaza en el eje 'z'
         transform.position += new Vector3(0.0f, 0.0f, 0.2f);
-        rot += 0.025f;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(rot, -23.45f, 0.0f),  Time.deltaTime * 5.0f);
+        // asigna nuevo valor de roll
+        roll += 0.025f;
+        // rotacion, realiza roll para emular movimiento del sol
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(roll, -23.45f, 0.0f),  Time.deltaTime * 5.0f);
+        // llama funcion cuando es de noche para volver a comenzar la animacion
         if(transform.position.z > 500.0f){
             resetLight();
         }
     }
 
     void resetLight(){
-        rot = 30.0f;
-        intensity = 5.0f;
+        // reestablece a los valores iniciales del objeto de luz
+        roll = 30.0f;
+        this.gameObject.GetComponent<Light>().intensity = 0.0f;
         transform.position = new Vector3(0.0f, 0.0f, -500.0f);
         transform.rotation = Quaternion.Euler(30.0f, -23.45f, 0.0f);
     }

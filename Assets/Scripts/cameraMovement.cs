@@ -3,28 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class cameraMovement:MonoBehaviour{
+    // inicializa multiplicador de movimiento
     float speedH = 2.0f, speedV = 2.0f;
+    // rotacion inicial
     float yaw = -90.0f, pitch = 10.0f;
 
     void Update(){
-        /* if(Input.GetButton("Jump")){
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(Input.GetAxis("Vertical") * -30.0f + 10.0f, Input.GetAxis("Horizontal") * 60.0f - 90.0f, 0.0f),  Time.deltaTime * 5.0f);
-        } */
+        // cuando se haga click
         if(Input.GetButton("Fire1")){
-           /*  if(Input.GetButton("Vertical")){
-                transform.Rotate(transform.rotation.x + Input.GetAxis("Vertical") * -0.5f, 0.0f, 0.0f);
-            }
-            else if(Input.GetButton("Horizontal")){
-                transform.Rotate(0.0f, transform.rotation.y + 1.0f, 0.0f);
-            } */
+            // calcula el nuevo yaw y pitch con el input del mouse
             yaw += speedH * -Input.GetAxis("Mouse X");
             pitch -= speedV * -Input.GetAxis("Mouse Y");
+            // rotacion, asigna nuevo yaw y pitch
             transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
         }
+        // al presionar w, s o up, down
         if(Input.GetButton("Vertical")){
+            // traslacion, suma input a la posicion actual en eje x
             transform.position += new Vector3(Input.GetAxis("Vertical") * -0.5f, 0.0f, 0.0f);
         }
+        // al presionar a, d o left, right
         else if(Input.GetButton("Horizontal")){
+            // traslacion, suma input a la posicion actual en eje z
             transform.position += new Vector3(0.0f, 0.0f, Input.GetAxis("Horizontal") * 0.5f);
         }
     }
